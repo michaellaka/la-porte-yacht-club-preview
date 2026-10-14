@@ -32,3 +32,5 @@ Enable Enforce HTTPS once GitHub issues the certificate.
 
 ## Local preview
 Run python -m http.server 8765 in this folder and open http://127.0.0.1:8765.
+
+Commodore's Corner has a dedicated section at #commodore. Replace its clearly labeled pending message with club-approved text and attribution.
