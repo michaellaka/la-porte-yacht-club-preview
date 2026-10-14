@@ -34,3 +34,5 @@ Enable Enforce HTTPS once GitHub issues the certificate.
 Run python -m http.server 8765 in this folder and open http://127.0.0.1:8765.
 
 Commodore's Corner has a dedicated section at #commodore. Replace its clearly labeled pending message with club-approved text and attribution.
+
+Brand asset: lpyc-logo.png is the user-provided LPYC sunset logo, used without alteration in the header and footer.
