@@ -38,3 +38,5 @@ Commodore's Corner has a dedicated section at #commodore. Replace its clearly la
 Brand asset: lpyc-logo.png is the user-provided LPYC sunset logo, used without alteration in the header and footer.
 
 Search preparation: canonical URL, club name/location title, social metadata, LocalBusiness/WebSite structured data, robots.txt and sitemap.xml. Search Console and Bing verification/submission require the owner's authenticated account.
+
+IndexNow: lpyc-indexnow-key.txt is the public website-ownership proof used to notify participating search engines when the homepage changes. It is not an account login credential.
