@@ -36,3 +36,5 @@ Run python -m http.server 8765 in this folder and open http://127.0.0.1:8765.
 Commodore's Corner has a dedicated section at #commodore. Replace its clearly labeled pending message with club-approved text and attribution.
 
 Brand asset: lpyc-logo.png is the user-provided LPYC sunset logo, used without alteration in the header and footer.
+
+Search preparation: canonical URL, club name/location title, social metadata, LocalBusiness/WebSite structured data, robots.txt and sitemap.xml. Search Console and Bing verification/submission require the owner's authenticated account.

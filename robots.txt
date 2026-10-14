@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /server.py
+Disallow: /START_WINDOWS.bat
+Disallow: /README.txt
+Disallow: /la-porte-yacht-club-preview.zip
+Sitemap: https://lpyc.club/sitemap.xml
