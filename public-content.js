@@ -1,0 +1,3 @@
+import {getClient} from './firebase-client.js';
+import {toPublicData} from './content-core.mjs';
+try{const c=await getClient();if(c){const {collection,query,where,limit,getDocs}=c.dbApi;const all={};await Promise.all(['specials','notes','events'].map(async kind=>{const snap=await getDocs(query(collection(c.db,'content',kind,'items'),where('status','==','published'),limit(100)));all[kind]=snap.docs.map(d=>({id:d.id,...d.data()}));}));const data=toPublicData(all);window.LPYC_LIVE_CONTENT=data;window.dispatchEvent(new CustomEvent('club-content',{detail:data}));}}catch(error){console.warn('Club updates could not load; showing the existing club information.',error.code||'unavailable');}
