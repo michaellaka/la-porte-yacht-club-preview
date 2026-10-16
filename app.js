@@ -9,6 +9,27 @@
  const days=document.getElementById('calendar-days'),category=document.getElementById('event-category');
  const eventsFor=d=>data.events.filter(e=>e.date===key(d)&&(category.value==='all'||category.value===e.category));
  const longDate=d=>d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+ function upcoming(){
+  const list=document.getElementById('upcoming-events');if(!list)return;list.replaceChildren();
+  const upcomingEvents=data.events.filter(e=>e.date>=key(today)).sort((a,b)=>(a.date+' '+a.time).localeCompare(b.date+' '+b.time)).slice(0,3);
+  list.hidden=!upcomingEvents.length;
+  const clock=minutes=>`${Math.floor(minutes/60)%12||12}:${String(minutes%60).padStart(2,'0')} ${minutes<720?'a.m.':'p.m.'}`;
+  for(const event of upcomingEvents){
+   const [year,number,day]=event.date.split('-').map(Number),date=new Date(year,number-1,day);
+   const card=document.createElement('article');card.className='upcoming-card';
+   const label=document.createElement('p');label.className='eyebrow';label.textContent='UPCOMING AT THE CLUB';
+   const title=document.createElement('h3');title.textContent=event.title;
+   const meta=document.createElement('p');meta.className='upcoming-meta';let times='';
+   if(event.time){const [hour,minute]=event.time.split(':').map(Number),start=hour*60+minute,end=start+(Number(event.durationMinutes)||60);times=` · ${clock(start)}–${clock(end%1440)}${end>=1440?' (next day)':''}`;}
+   meta.textContent=longDate(date)+times;
+   const location=document.createElement('p');location.textContent=event.location||'La Porte Yacht Club';
+   const body=document.createElement('p');body.className='upcoming-description';body.textContent=event.description||'';
+   const actions=document.createElement('div');actions.className='upcoming-actions';
+   const view=document.createElement('button');view.textContent='View on club calendar';view.onclick=()=>{selected=date;month=new Date(year,number-1,1);category.value='all';render();document.querySelector('.calendar-layout').scrollIntoView({behavior:'smooth',block:'start'});};actions.append(view);
+   if(event.time){const download=document.createElement('button');download.textContent='Add to my calendar ↓';download.onclick=()=>downloadEvent(event);actions.append(download);}
+   card.append(label,title,meta,location,body,actions);list.append(card);
+  }
+ }
  function details(){
   document.getElementById('selected-date').textContent=selected.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   const list=document.getElementById('day-events');list.replaceChildren();
@@ -35,7 +56,7 @@
  function updateContent(){
   if(data.special&&data.special.validThrough>=key(today)){document.getElementById('special-title').textContent=data.special.title;document.getElementById('special-description').textContent=[data.special.description,data.special.price].filter(Boolean).join(' · ');}
   if(data.commodore){document.getElementById('commodore-title').textContent=data.commodore.title;document.getElementById('commodore-body').textContent=data.commodore.body;document.getElementById('commodore-body').style.whiteSpace='pre-wrap';document.getElementById('commodore-signature').textContent=data.commodore.signature;}
-  render();
+  upcoming();render();
  }
  window.addEventListener('club-content',event=>{data={...data,...event.detail};updateContent();});updateContent();
 })();
