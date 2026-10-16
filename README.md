@@ -40,3 +40,5 @@ Brand asset: lpyc-logo.png is the user-provided LPYC sunset logo, used without a
 Search preparation: canonical URL, club name/location title, social metadata, LocalBusiness/WebSite structured data, robots.txt and sitemap.xml. Search Console and Bing verification/submission require the owner's authenticated account.
 
 IndexNow: lpyc-indexnow-key.txt is the public website-ownership proof used to notify participating search engines when the homepage changes. It is not an account login credential.
+
+Staff desk: https://lpyc.club/staff.html uses Firebase Authentication and role-restricted Firestore editing. See STAFF-SETUP.md for account setup and current validation status.
