@@ -54,6 +54,7 @@
  document.getElementById('today').addEventListener('click',()=>{selected=new Date(today);month=new Date(today.getFullYear(),today.getMonth(),1);render();});category.addEventListener('change',render);
  const toggle=document.getElementById('menu-toggle'),nav=document.getElementById('navigation');toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open);});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));
  function updateContent(){
+  const art=document.getElementById('burger-special-art');if(art)art.hidden=!(data.special?.validThrough==='2026-10-18'&&data.special.description?.includes('BIG MAC BURGER')&&data.special.description?.includes('PIZZA BURGER'));
   if(data.special&&data.special.validThrough>=key(today)){document.getElementById('special-title').textContent=data.special.title;document.getElementById('special-description').textContent=[data.special.description,data.special.price].filter(Boolean).join(' · ');}
   if(data.commodore){document.getElementById('commodore-title').textContent=data.commodore.title;document.getElementById('commodore-body').textContent=data.commodore.body;document.getElementById('commodore-body').style.whiteSpace='pre-wrap';document.getElementById('commodore-signature').textContent=data.commodore.signature;}
   upcoming();render();
