@@ -3,3 +3,5 @@
 dialog{border:1px solid #d9dfdf;border-radius:14px;padding:28px;max-width:450px;width:90%;color:var(--navy)}dialog::backdrop{background:#082b4e88}
 
 #notice:not(:empty){position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:min(640px,90vw);z-index:1000;box-shadow:0 8px 35px #082b4e33;font-size:17px;font-weight:700;border-width:2px}#notice.error{background:#fff0ed;border-color:#b44036}
+
+.password-toggle{display:block;margin:8px 0 4px auto;padding:5px 10px;background:white;color:var(--navy);font-size:13px}.password-toggle[aria-pressed=true]{background:#e9eff4}
