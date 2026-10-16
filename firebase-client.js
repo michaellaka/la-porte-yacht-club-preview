@@ -1,4 +1,4 @@
-import {firebaseConfig} from './firebase-config.js';
+import {firebaseConfig} from './firebase-config.js?v=20261016';
 let client;
 export async function getClient(){
  if(!firebaseConfig?.projectId)return null;
@@ -7,3 +7,4 @@ export async function getClient(){
  const instance=app.initializeApp(firebaseConfig);return {authApi:auth,dbApi:db,auth:auth.getAuth(instance),db:db.getFirestore(instance)};
  })();return client;
 }
+

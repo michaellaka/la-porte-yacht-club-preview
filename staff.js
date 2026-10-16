@@ -1,5 +1,5 @@
-import {getClient} from './firebase-client.js';
-import {ADMIN_EMAIL} from './firebase-config.js';
+import {getClient} from './firebase-client.js?v=20261016';
+import {ADMIN_EMAIL} from './firebase-config.js?v=20261016';
 import {kinds,localDate,validateContent} from './content-core.mjs';
 const $=id=>document.getElementById(id);let c,user,role,kind,records=[],current=null,busy=false,dirty=false,creatingAccount=false;
 const notify=(text,type='')=>{$('notice').textContent=text;$('notice').className=type;};
@@ -30,4 +30,5 @@ $('access-form').onsubmit=e=>{e.preventDefault();run(async()=>{const email=$('st
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 async function authChanged(next){if(creatingAccount)return;user=next;records=[];current=null;dirty=false;role=null;kind=null;$('records-list').replaceChildren();$('staff-list').replaceChildren();$('workspace').hidden=true;$('signin').hidden=false;if(!user){notify('');return;}if(!user.emailVerified){notify('Please verify your email address before using the staff desk. Contact the administrator if you need a new verification email.','error');await c.authApi.signOut(c.auth);notify('Please verify your email address before signing in.','error');return;}try{const email=user.email.toLowerCase();if(email===ADMIN_EMAIL)role='admin';else{const s=await c.dbApi.getDoc(c.dbApi.doc(c.db,'staff',email));role=s.exists()?s.data().role:null;}if(!['admin','chef','commodore','events'].includes(role)){await c.authApi.signOut(c.auth);notify('This account has not been assigned staff access. Contact the club administrator.','error');return;}$('signin').hidden=true;$('workspace').hidden=false;$('signed-in-as').textContent=user.email+' · '+(role==='admin'?'Administrator':role==='chef'?'Kitchen Specials':role==='commodore'?'Commodore’s Corner':'Events & Calendar');notify('');await openKind(Object.keys(kinds).find(k=>allowed(k)));}catch(e){notify(friendly(e),'error');}}
 try{c=await getClient();if(!c){$('setup-note').hidden=false;document.querySelectorAll('#signin input,#signin button').forEach(el=>el.disabled=true);}else c.authApi.onAuthStateChanged(c.auth,authChanged);}catch(e){notify('Staff sign-in could not load. Please try again later.','error');document.querySelectorAll('#signin button').forEach(el=>el.disabled=true);}
+
 
