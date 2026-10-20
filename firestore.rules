@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
  match /databases/{database}/documents {
   function verified(){return request.auth != null && request.auth.token.email_verified == true;}
-  function admin(){return verified() && request.auth.token.email.lower() == 'mike@options-abc.com';}
+  function admin(){return verified() && (request.auth.token.email.lower() == 'mike@options-abc.com' || staffRole() == 'admin');}
   function staffRole(){return verified() && exists(/databases/$(database)/documents/staff/$(request.auth.token.email.lower())) ? get(/databases/$(database)/documents/staff/$(request.auth.token.email.lower())).data.role : '';}
   function editor(kind){return admin() || (kind == 'specials' && staffRole() == 'chef') || (kind == 'notes' && staffRole() == 'commodore') || (kind == 'events' && staffRole() == 'events');}
   function valid(x,kind){return x.keys().hasAll(['title','body','startDate','endDate','time','durationMinutes','price','location','author','category','status','createdAt','updatedAt']) && x.keys().hasOnly(['title','body','startDate','endDate','time','durationMinutes','price','location','author','category','status','createdAt','updatedAt'])
@@ -20,7 +20,7 @@ service cloud.firestore {
   match /staff/{email} {
    allow get: if admin() || (verified() && request.auth.token.email.lower() == email);
    allow list: if admin();
-   allow create,update: if admin() && email != 'mike@options-abc.com' && email.matches('^[^/]+@[^/]+$') && request.resource.data.keys().hasOnly(['role','updatedAt']) && request.resource.data.role in ['chef','commodore','events'] && request.resource.data.updatedAt == request.time;
+   allow create,update: if admin() && email != 'mike@options-abc.com' && email.matches('^[^/]+@[^/]+$') && request.resource.data.keys().hasOnly(['role','updatedAt']) && request.resource.data.role in ['admin','chef','commodore','events'] && request.resource.data.updatedAt == request.time;
    allow delete: if admin() && email != 'mike@options-abc.com';
   }
   match /content/{kind}/items/{id} {
