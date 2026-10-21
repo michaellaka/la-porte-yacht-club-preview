@@ -11,7 +11,7 @@
  const longDate=d=>d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
  function upcoming(){
   const list=document.getElementById('upcoming-events');if(!list)return;list.replaceChildren();
-  const upcomingEvents=data.events.filter(e=>e.date>=key(today)).sort((a,b)=>(a.date+' '+a.time).localeCompare(b.date+' '+b.time)).slice(0,3);
+  const upcomingEvents=data.events.filter(e=>e.date>=key(today)).sort((a,b)=>(a.date+' '+a.time).localeCompare(b.date+' '+b.time)).slice(0,6);
   list.hidden=!upcomingEvents.length;
   const clock=minutes=>`${Math.floor(minutes/60)%12||12}:${String(minutes%60).padStart(2,'0')} ${minutes<720?'a.m.':'p.m.'}`;
   for(const event of upcomingEvents){
@@ -30,6 +30,8 @@
    card.append(label,title);
    if(event.date==='2026-11-22'&&event.title.includes('Home for the Holidays')){const art=document.createElement('figure');art.className='event-art';const image=document.createElement('img');image.src='home-for-the-holidays-art.png';image.alt='Festive holiday bake-sale treats, handmade gifts and a decorated pontoon by the lake';image.width=1774;image.height=887;image.loading='lazy';art.append(image);card.append(art);}
    if(event.date==='2026-10-31'&&event.title.includes('Halloween')){card.classList.add('halloween-card');const art=document.createElement('a');art.className='halloween-flyer';art.href='halloween-party-2026.jpg';art.target='_blank';art.rel='noopener';art.setAttribute('aria-label','Open Halloween party flyer');const image=document.createElement('img');image.src='halloween-party-2026.jpg';image.alt='Halloween party flyer: October 31, 2026, starts at 6 p.m.; costume judging, bonfire, dancing, DJ; bring a dish';image.width=600;image.height=900;image.loading='lazy';art.append(image);card.append(art);}
+   if(event.date==='2026-12-06'&&event.title.includes('Toys for Tots')){card.classList.add('toy-drive-card');const art=document.createElement('a');art.className='toy-drive-flyer';art.href='toys-for-tots-tailgate-2026.jpg';art.target='_blank';art.rel='noopener';art.setAttribute('aria-label','Open Christmas Toys for Tots Tailgate flyer');const image=document.createElement('img');image.src='toys-for-tots-tailgate-2026.jpg';image.alt='Christmas Toys for Tots Tailgate flyer: December 6 at 10 a.m.; donate a toy, enjoy food and drinks, and gather around the fire';image.width=695;image.height=900;image.loading='lazy';art.append(image);card.append(art);}
+   if(event.date==='2026-11-14'&&event.title.includes('Fall Bingo')){card.classList.add('halloween-card');const art=document.createElement('a');art.className='toy-drive-flyer';art.href='fall-bingo-2026.jpg';art.target='_blank';art.rel='noopener';art.setAttribute('aria-label','Open Fall Bingo Night flyer');const image=document.createElement('img');image.src='fall-bingo-2026.jpg';image.alt='Fall Bingo Night flyer: November 14, 2026, doors open 4 p.m., bingo starts 6 p.m., $26, bring a dish to share';image.width=1080;image.height=1080;image.loading='lazy';art.append(image);card.append(art);}
    card.append(meta,location,body,actions);list.append(card);
   }
  }
