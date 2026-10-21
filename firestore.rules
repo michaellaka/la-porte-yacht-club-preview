@@ -11,7 +11,7 @@ service cloud.firestore {
    && x.endDate is string && (x.endDate == '' || x.endDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'))
    && (x.startDate == '' || x.endDate == '' || x.endDate >= x.startDate)
    && x.time is string && (x.time == '' || x.time.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$'))
-   && x.durationMinutes is int && x.durationMinutes>=15 && x.durationMinutes<=1440
+   && x.durationMinutes is int && x.durationMinutes>=0 && x.durationMinutes<=1440
    && x.price is string && x.price.size()<=60 && x.location is string && x.location.size()<=240 && x.author is string && x.author.size()<=120
    && x.category in ['club','social','dining'] && x.status in ['draft','published','archived']
    && (x.status != 'published' || (x.startDate != '' && (kind != 'specials' || x.endDate != '') && (kind != 'events' || x.time != '')))

@@ -12,7 +12,7 @@ export function validateContent(kind,x){
  if(kind==='specials'&&x.status==='published'&&!validDate(x.endDate))errors.push('Choose when the special expires.');
  if(kind==='events'&&x.status==='published'&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(x.time||''))errors.push('Choose an event start time.');
  if(!['club','social','dining'].includes(x.category))errors.push('Choose a valid calendar category.');
- if(!Number.isInteger(x.durationMinutes)||x.durationMinutes<15||x.durationMinutes>1440)errors.push('Event duration must be 15–1,440 minutes.');
+ if(!Number.isInteger(x.durationMinutes)||x.durationMinutes<0||x.durationMinutes>1440)errors.push('Event duration must be 0–1,440 minutes (0 means until sold out).');
  for(const [field,max] of Object.entries({price:60,location:240,author:120}))if((x[field]||'').length>max)errors.push(field+' is too long.');
  return [...new Set(errors)];
 }

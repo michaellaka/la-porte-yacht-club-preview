@@ -20,7 +20,7 @@
    const label=document.createElement('p');label.className='eyebrow';label.textContent='UPCOMING AT THE CLUB';
    const title=document.createElement('h3');title.textContent=event.title;
    const meta=document.createElement('p');meta.className='upcoming-meta';let times='';
-   if(event.time){const [hour,minute]=event.time.split(':').map(Number),start=hour*60+minute,end=start+(Number(event.durationMinutes)||60);times=` · ${clock(start)}–${clock(end%1440)}${end>=1440?' (next day)':''}`;}
+   if(event.time){const [hour,minute]=event.time.split(':').map(Number),start=hour*60+minute,end=start+(Number(event.durationMinutes)||60);times=event.durationMinutes===0?` · ${clock(start)} · until sold out`:` · ${clock(start)}–${clock(end%1440)}${end>=1440?' (next day)':''}`;}
    meta.textContent=longDate(date)+times;
    const location=document.createElement('p');location.textContent=event.location||'La Porte Yacht Club';
    const body=document.createElement('p');body.className='upcoming-description';body.textContent=event.description||'';
@@ -46,7 +46,7 @@
  const escapeICS=s=>String(s).replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
  function downloadEvent(event){
   const compact=event.date.replace(/-/g,'')+'T'+event.time.replace(':','')+'00';
-  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LPYC//Club Calendar//EN','BEGIN:VTIMEZONE','TZID:America/Chicago','BEGIN:DAYLIGHT','DTSTART:20070311T020000','RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU','TZOFFSETFROM:-0600','TZOFFSETTO:-0500','END:DAYLIGHT','BEGIN:STANDARD','DTSTART:20071104T020000','RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU','TZOFFSETFROM:-0500','TZOFFSETTO:-0600','END:STANDARD','END:VTIMEZONE','BEGIN:VEVENT',`UID:${escapeICS(event.id)}@lpyc.club`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,`DTSTART;TZID=America/Chicago:${compact}`,`DURATION:PT${Number(event.durationMinutes)||60}M`,`SUMMARY:${escapeICS(event.title)}`,`DESCRIPTION:${escapeICS(event.description||'')}`,`LOCATION:${escapeICS(event.location||'La Porte Yacht Club, 814 Pine Lake Avenue, La Porte IN')}`,'END:VEVENT','END:VCALENDAR'];
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LPYC//Club Calendar//EN','BEGIN:VTIMEZONE','TZID:America/Chicago','BEGIN:DAYLIGHT','DTSTART:20070311T020000','RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU','TZOFFSETFROM:-0600','TZOFFSETTO:-0500','END:DAYLIGHT','BEGIN:STANDARD','DTSTART:20071104T020000','RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU','TZOFFSETFROM:-0500','TZOFFSETTO:-0600','END:STANDARD','END:VTIMEZONE','BEGIN:VEVENT',`UID:${escapeICS(event.id)}@lpyc.club`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,`DTSTART;TZID=America/Chicago:${compact}`,...(event.durationMinutes===0?[]:[`DURATION:PT${Number(event.durationMinutes)||60}M`]),`SUMMARY:${escapeICS(event.title)}`,`DESCRIPTION:${escapeICS(event.description||'')}`,`LOCATION:${escapeICS(event.location||'La Porte Yacht Club, 814 Pine Lake Avenue, La Porte IN')}`,'END:VEVENT','END:VCALENDAR'];
   const blob=new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='lpyc-event.ics';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  }
  document.getElementById('previous').addEventListener('click',()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1);selected=new Date(month);render();});

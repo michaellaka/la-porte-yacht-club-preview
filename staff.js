@@ -1,6 +1,6 @@
 import {getClient} from './firebase-client.js?v=20261016';
 import {ADMIN_EMAIL} from './firebase-config.js?v=20261016';
-import {kinds,localDate,validateContent} from './content-core.mjs';
+import {kinds,localDate,validateContent} from './content-core.mjs?v=20261021';
 const $=id=>document.getElementById(id);let c,user,role,kind,records=[],current=null,busy=false,dirty=false,creatingAccount=false,setupMode=false;
 const notify=(text,type='')=>{$('notice').textContent=text;$('notice').className=type;};
 const friendly=e=>({'auth/popup-blocked':'Your browser blocked sign-in. Allow the Google sign-in window, or use email and password.','auth/popup-closed-by-user':'Sign-in was closed. Please try again.','auth/unauthorized-domain':'This website has not been authorized for sign-in yet. Contact the administrator.','auth/invalid-credential':'The email or password was not recognized. Please try again.','auth/email-already-in-use':'This account already exists. Sign in or use Forgot your password.','auth/weak-password':'Choose a stronger password with at least eight characters.','permission-denied':'You do not have permission for this action. Your access may have changed.','unavailable':'The service is unavailable. Your changes have not been saved. Please try again.','conflict':'Someone changed this update while you were editing. Reload the update before saving.'}[e.code]||'We could not complete that action. Your changes have not been saved. Please try again.');
