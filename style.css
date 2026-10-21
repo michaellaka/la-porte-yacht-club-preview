@@ -26,3 +26,5 @@ nav{gap:20px}.volunteer-section{background:#f0eee6;border-top:1px solid #deddd4}
 .toy-drive-card{background:#f0faf6;border-color:#b8d7c4;border-left-color:#b83229}.toy-drive-card h3{color:#245e3f}.toy-drive-flyer{display:block;max-width:450px;margin:22px auto}.toy-drive-flyer img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 8px 25px #245e3f20}.toy-drive-card .eyebrow{color:#a12c25}
 
 .event-access{display:inline-block;background:#082b4e;color:#fff;border-radius:6px;padding:9px 14px;font-size:13px;font-weight:700;letter-spacing:.5px;margin:5px 0 15px}
+
+.charitable-section{background:#faf8f2}.charitable-section>.section>p:not(.eyebrow){max-width:850px}.charitable-section .lead{font-size:22px;color:#367370}.charitable-section .document-grid{margin-top:30px}.giving-note{font-size:13px;color:#526661;border-top:1px solid #d3ddd3;padding-top:22px;margin-top:30px}
