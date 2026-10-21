@@ -27,7 +27,9 @@
    const actions=document.createElement('div');actions.className='upcoming-actions';
    const view=document.createElement('button');view.textContent='View on club calendar';view.onclick=()=>{selected=date;month=new Date(year,number-1,1);category.value='all';render();document.querySelector('.calendar-layout').scrollIntoView({behavior:'smooth',block:'start'});};actions.append(view);
    if(event.time){const download=document.createElement('button');download.textContent='Add to my calendar ↓';download.onclick=()=>downloadEvent(event);actions.append(download);}
-   card.append(label,title,meta,location,body,actions);list.append(card);
+   card.append(label,title);
+   if(event.date==='2026-11-22'&&event.title.includes('Home for the Holidays')){const art=document.createElement('figure');art.className='event-art';const image=document.createElement('img');image.src='home-for-the-holidays-art.png';image.alt='Festive holiday bake-sale treats, handmade gifts and a decorated pontoon by the lake';image.width=1774;image.height=887;image.loading='lazy';art.append(image);card.append(art);}
+   card.append(meta,location,body,actions);list.append(card);
   }
  }
  function details(){
