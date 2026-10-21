@@ -20,7 +20,7 @@
    const label=document.createElement('p');label.className='eyebrow';label.textContent='UPCOMING AT THE CLUB';
    const title=document.createElement('h3');title.textContent=event.title;
    const meta=document.createElement('p');meta.className='upcoming-meta';let times='';
-   if(event.time){const [hour,minute]=event.time.split(':').map(Number),start=hour*60+minute,end=start+(Number(event.durationMinutes)||60);times=event.durationMinutes===0?` · ${clock(start)} · until sold out`:` · ${clock(start)}–${clock(end%1440)}${end>=1440?' (next day)':''}`;}
+   if(event.time){const [hour,minute]=event.time.split(':').map(Number),start=hour*60+minute,end=start+(Number(event.durationMinutes)||60);times=event.durationMinutes===0?` · ${clock(start)}${/until sold out/i.test(event.description||'')?' · until sold out':' start'}`:` · ${clock(start)}–${clock(end%1440)}${end>=1440?' (next day)':''}`;}
    meta.textContent=longDate(date)+times;
    const location=document.createElement('p');location.textContent=event.location||'La Porte Yacht Club';
    const body=document.createElement('p');body.className='upcoming-description';body.textContent=event.description||'';
@@ -29,6 +29,7 @@
    if(event.time){const download=document.createElement('button');download.textContent='Add to my calendar ↓';download.onclick=()=>downloadEvent(event);actions.append(download);}
    card.append(label,title);
    if(event.date==='2026-11-22'&&event.title.includes('Home for the Holidays')){const art=document.createElement('figure');art.className='event-art';const image=document.createElement('img');image.src='home-for-the-holidays-art.png';image.alt='Festive holiday bake-sale treats, handmade gifts and a decorated pontoon by the lake';image.width=1774;image.height=887;image.loading='lazy';art.append(image);card.append(art);}
+   if(event.date==='2026-10-31'&&event.title.includes('Halloween')){card.classList.add('halloween-card');const art=document.createElement('a');art.className='halloween-flyer';art.href='halloween-party-2026.jpg';art.target='_blank';art.rel='noopener';art.setAttribute('aria-label','Open Halloween party flyer');const image=document.createElement('img');image.src='halloween-party-2026.jpg';image.alt='Halloween party flyer: October 31, 2026, starts at 6 p.m.; costume judging, bonfire, dancing, DJ; bring a dish';image.width=600;image.height=900;image.loading='lazy';art.append(image);card.append(art);}
    card.append(meta,location,body,actions);list.append(card);
   }
  }
