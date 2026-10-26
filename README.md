@@ -42,3 +42,14 @@ Search preparation: canonical URL, club name/location title, social metadata, Lo
 IndexNow: lpyc-indexnow-key.txt is the public website-ownership proof used to notify participating search engines when the homepage changes. It is not an account login credential.
 
 Staff desk: https://lpyc.club/staff.html uses Firebase Authentication and role-restricted Firestore editing. See STAFF-SETUP.md for account setup and current validation status.
+
+## Member event RSVPs (October 26, 2026)
+Upcoming published events show Going / Interested / Not Going. Counts require a verified, active membership sign-in (or event staff access). Members can change or clear their response. The response key stays attached to the membership ID across roster updates, preventing duplicate responses when a membership email changes. RSVP is an expression of attendance intent; it does not collect payment or reserve paid tickets.
+
+The homepage Member RSVPs panel uses existing Firebase Google or email/password sign-in. Email/password accounts must verify their email. Importing a roster does not create accounts or send invitations. Member IDs are identifiers, not passwords.
+
+Administrators see Membership roster after sign-in. Upload a CSV with Member ID and Email columns, preview the record count, then Import memberships. Other columns are retained privately for organizers. IDs preserve leading zeroes and support letters, numbers, hyphens and underscores (max 80). Each email and ID must be unique in a file. Shared household emails need a designated membership record before import. Imports update existing IDs and do not deactivate omitted members. Conflicting email ownership blocks the import; batches of 100 report partial progress on connection failures and can be retried. Keep the original source CSV as the roster backup.
+
+Administrators and Events staff can use View attendee list on an event to see responding members and their contact information. Other members see counts and their own selection; response documents contain only status, timestamp and an opaque key, never names/contact details. Staff permissions remain unchanged.
+
+Validation: JavaScript syntax, CSV parser/duplicate/malformed-file checks, 30 Firebase Rules API simulations (including positive responses and access denials), and signed-out browser layout checked. No real membership roster has been supplied/imported; real-member sign-in, import and RSVP flow remain to be verified after roster onboarding. Security rules are deployed to existing lpyc-staff; site remains on GitHub Pages.

@@ -29,6 +29,48 @@ service cloud.firestore {
    allow update: if kind in ['specials','notes','events'] && editor(kind) && valid(request.resource.data,kind) && request.resource.data.createdAt == resource.data.createdAt;
    allow delete: if false;
   }
+
+  function eventOrganizer(){return admin() || staffRole() == 'events';}
+  function membership(){return verified() && exists(/databases/$(database)/documents/rosterEmails/$(request.auth.token.email.lower()))
+   && get(/databases/$(database)/documents/members/$(get(/databases/$(database)/documents/rosterEmails/$(request.auth.token.email.lower())).data.memberId)).data.active == true
+   && get(/databases/$(database)/documents/members/$(get(/databases/$(database)/documents/rosterEmails/$(request.auth.token.email.lower())).data.memberId)).data.email == request.auth.token.email.lower();}
+  function responseKey(){return get(/databases/$(database)/documents/members/$(get(/databases/$(database)/documents/rosterEmails/$(request.auth.token.email.lower())).data.memberId)).data.rsvpKey;}
+  match /members/{memberId} {
+   allow get: if eventOrganizer() || (membership() && resource.data.email == request.auth.token.email.lower());
+   allow list: if eventOrganizer();
+   allow create, update: if admin() && request.resource.data.keys().hasAll(['memberId','email','name','contactJSON','active','rsvpKey','updatedAt']) && request.resource.data.keys().hasOnly(['memberId','email','name','contactJSON','active','rsvpKey','updatedAt'])
+    && request.resource.data.memberId == memberId && memberId.matches('^[A-Za-z0-9_-]{1,80}$')
+    && request.resource.data.email is string && request.resource.data.email.size() <= 254 && request.resource.data.email.matches('^[^/@ ]+@[^/@ ]+$') && request.resource.data.email == request.resource.data.email.lower()
+    && request.resource.data.name is string && request.resource.data.name.size() <= 300
+    && request.resource.data.contactJSON is string && request.resource.data.contactJSON.size() <= 20000
+    && request.resource.data.rsvpKey is string && request.resource.data.rsvpKey.size() > 0 && request.resource.data.rsvpKey.size() <= 80
+    && request.resource.data.active is bool && request.resource.data.updatedAt == request.time;
+   allow delete: if false;
+  }
+  match /rosterEmails/{email} {
+   allow get: if eventOrganizer() || (verified() && request.auth.token.email.lower() == email);
+   allow list: if admin();
+   allow create,update: if admin() && request.resource.data.keys().hasOnly(['memberId']) && request.resource.data.memberId is string
+    && getAfter(/databases/$(database)/documents/members/$(request.resource.data.memberId)).data.email == email;
+   allow delete: if admin();
+  }
+  match /memberBindings/{uid} {
+   allow get: if eventOrganizer() || (verified() && membership() && responseKey() == uid);
+   allow list: if eventOrganizer();
+   allow create,update: if membership() && membership() && responseKey() == uid && request.resource.data.keys().hasOnly(['email','memberId'])
+    && request.resource.data.email == request.auth.token.email.lower()
+    && request.resource.data.memberId == get(/databases/$(database)/documents/rosterEmails/$(request.auth.token.email.lower())).data.memberId;
+   allow delete: if false;
+  }
+  match /content/events/items/{eventId}/responses/{uid} {
+   // Opaque stable membership keys, status and timestamp; no contact details.
+   allow read: if membership() || eventOrganizer();
+   allow create,update: if membership() && membership() && responseKey() == uid
+    && get(/databases/$(database)/documents/content/events/items/$(eventId)).data.status == 'published'
+    && request.resource.data.keys().hasAll(['status','updatedAt']) && request.resource.data.keys().hasOnly(['status','updatedAt'])
+    && request.resource.data.status in ['going','interested','not-going'] && request.resource.data.updatedAt == request.time;
+   allow delete: if verified() && membership() && responseKey() == uid;
+  }
   match /{document=**}{allow read,write: if false;}
  }
 }
