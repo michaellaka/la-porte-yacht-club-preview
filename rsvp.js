@@ -6,6 +6,7 @@ const errorText=e=>e.code==='permission-denied'?'Access could not be verified. S
 async function run(fn){if(busy)return;busy=true;document.querySelectorAll('#member-panel button').forEach(b=>b.disabled=true);try{await fn();}catch(e){notice(errorText(e));}finally{busy=false;document.querySelectorAll('#member-panel button').forEach(b=>b.disabled=false);}}
 function rosterRef(email){return c.dbApi.doc(c.db,'rosterEmails',email);}
 async function refresh(){
+ $('attendee-list').replaceChildren();$('attendee-section').hidden=true;pending=[];$('roster-file').value='';$('roster-preview').textContent='';
  member=null;organizer=false;admin=false;$('member-admin').hidden=true;$('member-identity').textContent='';
  if(user?.emailVerified){const email=user.email.toLowerCase();const role=await c.dbApi.getDoc(c.dbApi.doc(c.db,'staff',email));admin=email==='mike@options-abc.com'||role.data()?.role==='admin';organizer=admin||role.data()?.role==='events';
  const entry=await c.dbApi.getDoc(rosterRef(email));if(entry.exists()){const m=await c.dbApi.getDoc(c.dbApi.doc(c.db,'members',entry.data().memberId));if(m.exists()&&m.data().active&&m.data().email===email){member=m.data();await c.dbApi.setDoc(c.dbApi.doc(c.db,'memberBindings',member.rsvpKey),{email,memberId:member.memberId});}}
